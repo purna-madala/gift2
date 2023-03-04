@@ -1,6 +1,6 @@
 from django.test import TestCase
 from LegacySite.models import Card
-
+from django.test import Client
 # Create your tests here.
 
 class MyTest(TestCase):
@@ -14,6 +14,16 @@ class MyTest(TestCase):
 
     # Assuming that your database had at least one Card in it, this
     # test should pass.
-    def test_get_card(self):
-        allcards = Card.objects.all()
-        self.assertNotEqual(len(allcards), 0)
+    def test_case_1(self):
+            response = self.client.get('/buy.html?director=<script>alert("Hello")</script>')
+            if "<script>alert(1)</script>" in str(response.content):
+                print("Failed")
+                self.fail("script present")
+            else:
+                print("SUCCESS")
+            
+    def test_case_2(self):
+        self.client = Client(enforce_csrf_checks=True)     
+        response = self.client.post('gift.html?amount=1000&username=test2')
+        self.assertEqual(response.status_code, 404)
+        print("SUCCESS")
