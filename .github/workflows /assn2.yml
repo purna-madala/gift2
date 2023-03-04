@@ -1,0 +1,13 @@
+name: assn2
+
+on:
+  push:
+    branches: [ master ]
+
+
+jobs:
+  when-push:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - run: python manage.py test

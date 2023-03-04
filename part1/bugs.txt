@@ -1,0 +1,8 @@
+Bug 1: XSS Vulnerability
+
+In the item-single.html there is the {director|safe} command in which the safe filter allows the website to run javascipt.
+When we remove the safe filter, we prevent any modification to the html URL which prevents attackers to run malicious codefrom the URL.
+
+Bug 2: CSRF 
+
+In views.py there are lines of code which allow either POST or GET, we need to remove that part of the code to fix the CSRF bug.
