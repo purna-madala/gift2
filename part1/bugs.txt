@@ -6,3 +6,11 @@ When we remove the safe filter, we prevent any modification to the html URL whic
 Bug 2: CSRF 
 
 In views.py there are lines of code which allow either POST or GET, we need to remove that part of the code to fix the CSRF bug.
+
+Bug 3: Sqli
+
+the sql injection works because of raw input taken by the website
+
+Bug 4 : CMDI
+
+there is a command line injection vulnerability which is fixed with using a sub proces

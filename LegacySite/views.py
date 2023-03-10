@@ -145,10 +145,10 @@ def gift_card_view(request, prod_num=0):
         if prod_num == 0:
             prod_num = 1
         # Get vars from either post or get
-        user = request.POST.get('username', None) 
+        user = request.POST.get('username', None) \
             #if request.method == "POST" else request.GET.get('username', None)
-        amount = request.POST.get('amount', None) 
-            #if request.method == "POST" else request.GET.get('amount', None)
+        amount = request.POST.get('amount', None) \
+            if request.method == "POST" else request.GET.get('amount', None)
         if user is None:
             return HttpResponse("ERROR 404")
         try:
@@ -210,7 +210,10 @@ def use_card_view(request):
         print(card_data.strip())
         signature = json.loads(card_data)['records'][0]['signature']
         # signatures should be pretty unique, right?
-        card_query = Card.objects.raw('select id from LegacySite_card where data LIKE \'%%%s%%\'' % signature)
+        #original
+        #card_query = Card.objects.raw('select id from LegacySite_card where data LIKE \'%%%s%%\'' % signature)
+        #FIX
+        card_query = Card.objects.raw('select id from LegacySite_card where data LIKE %s', ['%{}%'.format(signature)])
         user_cards = Card.objects.raw('select id, count(*) as count from LegacySite_card where LegacySite_card.user_id = %s' % str(request.user.id))
         card_query_string = ""
         print("Found %s cards" % len(card_query))

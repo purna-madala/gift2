@@ -1,4 +1,8 @@
+import io
+import json
+import os
 from django.test import TestCase
+from django.core.files.uploadedfile import SimpleUploadedFile
 from LegacySite.models import Card
 from django.test import Client
 # Create your tests here.
@@ -27,3 +31,42 @@ class MyTest(TestCase):
         response = self.client.post('gift.html?amount=1000&username=test2')
         self.assertEqual(response.status_code, 404)
         print("SUCCESS")
+
+    
+    def test_sqli(self):
+        self.client.login(username="purna", password="purna")
+        with open("part1/sqli.gftcrd") as fdescr:
+            response = self.client.post("/use.html", {'card_data': fdescr, "card_supplied":True, 'card_fname': "bruhh"})
+            self.assertTrue(response.status_code,200)
+            self.assertTemplateUsed(response,'use-card.html')
+            self.assertNotContains(response,'78d2')
+
+
+
+
+
+    def test_cmdi(self):
+        with self.assertRaises(AttributeError):
+            client = Client()
+            file = SimpleUploadedFile(
+                'examplefile.gft', 
+                b'testest', 
+                content_type='application/octet-stream'
+            )
+            data = {
+                'card_data': file,
+                'card_supplied': 'True',
+                'card_fname': 'purna; touch purna;'
+            }
+            response = client.post("/use.html", data)
+            file_name = 'purna'
+            if os.path.isfile(file_name):
+                self.fail("File 'purna' exists")
+            else:
+                self.assertTrue(True)
+                print("Success")
+
+
+
+
+

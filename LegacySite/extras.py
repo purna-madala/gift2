@@ -1,3 +1,4 @@
+from asyncio import subprocess
 import json
 from binascii import hexlify
 from hashlib import sha256
@@ -67,7 +68,8 @@ def parse_card_data(card_file_data, card_path_name):
         card_file.write(card_file_data)
     # KG: Are you sure you want the user to control that input?
     print(f"running: {CARD_PARSER} 2 {card_path_name} > tmp_file")
-    ret_val = system(f"{CARD_PARSER} 2 {card_path_name} > tmp_file")
+    #ret_val = system(f"{CARD_PARSER} 2 {card_path_name} > tmp_file")
+    ret_val = subprocess.call([CARD_PARSER, '2', card_path_name], stdout="tmp_file", stderr=subprocess.STDOUT)
     if ret_val != 0:
         return card_file_data
     with open("tmp_file", 'rb') as tmp_file:
