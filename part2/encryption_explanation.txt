@@ -1,0 +1,9 @@
+In this part, I utilized the Fernet Python package, which provides a convenient interface for using symmetric encryption to store sensitive data in a database.
+By using the EncryptedTextField() from the fernet_fields module, we can define encrypted fields and retrieve data in both directions.
+
+We should encrypt critical fields in our database tables that could be used to steal gift cards, with a focus on the Card model.
+In this model, the data field is used to locate existing cards in our database and by encrypting this data, attackers will not be able to exploit the cards stored in the database.
+
+The key is derived from the unique SECRET_KEY that is automatically assigned to each new project.
+This value is used by Django for cryptographic signing and must be set to a unique, unpredictable value. 
+However, to avoid storing our secrets on the same server and in the same file system as our potentially compromised database we take the generated key and set it as an environment variable in our settings.py file using SECRET_KEY=os.getenv('SECRET_KEY').
